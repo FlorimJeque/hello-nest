@@ -1,41 +1,10 @@
 pipeline {
-    agent any
-
-    environment {
-        DOCKER_IMAGE = 'hellonest' // Name of your Docker image
-        CONTAINER_NAME = 'vt/backend' // Name you want to assign to your container
-    }
-
+    agent { dockerfile true }
     stages {
-        stage('Build Docker Image') {
+        stage('Test') {
             steps {
-                script {
-                    // Build the Docker image
-                    docker.build(env.DOCKER_IMAGE)
-                }
-            }
-        }
-
-        stage('Run Container') {
-            steps {
-                script {
-                    // Run the Docker container
-                    docker.run("-d --name ${env.CONTAINER_NAME} -p 5001:3000 ${env.DOCKER_IMAGE}")
-                }
-            }
-        }
-
-    }
-
-    post {
-        always {
-            // Cleanup steps
-            script {
-                // Stop and remove the Docker container
-                docker.stop(env.CONTAINER_NAME)
-                docker.removeContainer(env.CONTAINER_NAME)
-                // Remove the Docker image
-                docker.image(env.DOCKER_IMAGE).remove()
+                sh 'node --version'
+                sh 'svn --version'
             }
         }
     }
