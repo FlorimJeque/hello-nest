@@ -7,12 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/your/repo.git' // Git repository URL
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 script {
